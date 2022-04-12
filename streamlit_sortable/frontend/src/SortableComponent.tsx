@@ -132,6 +132,7 @@ function SortableComponent (props: SortableComponentProps){
   }
 
   function handleDragCancel() {
+    console.log('canceled')
     setActiveItem(null);
     setItems(clonedItems);
   }
@@ -141,9 +142,6 @@ function SortableComponent (props: SortableComponentProps){
     const {active, over} = event;
     if (!over) {
       return
-    }
-    if (active.id === over.id) {
-      return;
     }
 
     const activeContainerIndex = findContainer(active.id);
