@@ -7,7 +7,6 @@ import {
   DndContext, 
   useDroppable,
   DragOverlay,
-  closestCenter,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
@@ -37,10 +36,6 @@ interface ContainerDescription {
   items: string[]
 }
 
-interface SortableComponentWrapperState {
-  items: ContainerDescription[]
-}
-
 interface ContainerProps {
   header: string,
   items: string[],
@@ -54,18 +49,16 @@ function Container(props: ContainerProps) {
     id: props.header,
   });
 
-  const className = "sortable-container ";// + (props.direction === 'vertical' ? "vertical" : "horizontal");
-
   return (
-    <div className={className} ref={setNodeRef} style={{width: props.width}}>
+    <div className="sortable-container" ref={setNodeRef} style={{width: props.width}}>
       {
         props.header? (<div className="container-header">{props.header}</div>): null
       }
-        <SortableContext id={props.header} items={props.items} strategy={rectSortingStrategy}>
-          <div className="container-body">
-          {props.children}
-          </div>
-        </SortableContext>
+      <SortableContext id={props.header} items={props.items} strategy={rectSortingStrategy}>
+        <div className="container-body">
+        {props.children}
+        </div>
+      </SortableContext>
     </div>
   )
 }
@@ -165,8 +158,11 @@ function SortableComponent (props: SortableComponentProps){
           }
         }
       })
+
       setItems(newItems);
-      Streamlit.setComponentValue(newItems);
+      if (!isSameOrder(clonedItems, newItems)) {
+        Streamlit.setComponentValue(newItems);
+      }
     }
   }
 
@@ -216,6 +212,22 @@ function SortableComponent (props: SortableComponentProps){
       return containerIndex;
     }
     return items.findIndex(({items}) => items.includes(item));
+  }
+
+  function isSameOrder(items1: ContainerDescription[], items2: ContainerDescription[]) {
+    if (items1.length !== items2.length) {
+      return false;
+    }
+
+    return items1.every(({header, items}, index) => {
+      const container2 = items2[index];
+      if (header !== container2.header) {
+        return false;
+      }
+      return items.every((item, index) => {
+        return item === container2.items[index];
+      });
+    })
   }
 }
 
