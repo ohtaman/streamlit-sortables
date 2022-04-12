@@ -1,0 +1,43 @@
+.sortable-container {
+    margin: auto;
+    padding: 0px;
+    font: var(--font);
+}
+
+.sortable-component.vertical .sortable-container {
+    float: left;
+    width: fit-content;
+    min-width: 200px;
+    padding: 10px;
+}
+
+.container-header {
+    margin: 0px;
+    background-color: var(--background-color);
+}
+
+.container-body {
+    margin: 0px;
+    padding: 3px;
+    width: 100%;
+    min-height: 48px;
+    border-radius: 3px;
+    background-color: var(--secondary-background-color);
+}
+
+.sortable-item, .sortable-item:hover{
+    margin: 5px;
+    background-color: var(--primary-color);
+    color: white;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    height: 100%;
+}
+
+.active {
+    opacity: 0.5;
+}
+
+.sortable-component.vertical .sortable-item {
+    display: block;
+}

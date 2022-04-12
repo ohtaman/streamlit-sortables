@@ -1,10 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import MyComponent from "./MyComponent"
+import SortableComponent from "./SortableComponent"
 
 ReactDOM.render(
   <React.StrictMode>
-    <MyComponent />
+    <SortableComponent />
   </React.StrictMode>,
   document.getElementById("root")
 )
