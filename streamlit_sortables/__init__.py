@@ -1,6 +1,6 @@
 import dataclasses
 import os
-from typing import Any, Union
+from typing import Any, Union, Optional
 
 import streamlit.components.v1 as components
 
@@ -8,7 +8,7 @@ import streamlit.components.v1 as components
 # the component, and True when we're ready to package and distribute it.
 # (This is, of course, optional - there are innumerable ways to manage your
 # release process.)
-_RELEASE = False
+_RELEASE = True
 
 # Declare a Streamlit component. `declare_component` returns a function
 # that is used to create instances of the component. We're naming this
@@ -47,13 +47,15 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def sort_items(items: Union[list[str], list[dict[str, Any]]],  header: str=None, multi_containers: bool=False, direction: str="horizontal", key: Any=None):
+def sort_items(items: list[str] | list[dict[str, Any]],  header: str | None=None, multi_containers: bool=False, direction: str="horizontal", key: Any=None):
     """Create a new instance of "sortable_items".
 
     Parameters
     ----------
-    items : Union[list[str], dict[str, list[str]]]
-        hogehoge
+    items : list[str] or dict[str, list[str]]
+    header: str or None
+    multi_containers: bool
+    direction: str
     key: str or None
         An optional key that uniquely identifies this component. If this is
         None, and the component's arguments are changed, the component will
@@ -65,7 +67,15 @@ def sort_items(items: Union[list[str], list[dict[str, Any]]],  header: str=None,
         sorted version of items
     """
     if not multi_containers:
+        if not isinstance(header, str | None):
+            raise ValueError('header argument must be str or None if multi_containers is False.')
+        if not all(map(lambda item: isinstance(item, str), items)):
+            raise ValueError('items must be list[str] if multi_containers is False.')
+        
         items = [{'header': header, 'items': items}]
+    else:
+        if not all(map(lambda item: isinstance(item, dict), items)):
+            raise ValueError('items must be list[dict[str, Any]] if multi_containers is True.')
     
     component_value = _component_func(items=items, direction=direction, key=key, default=items)
 
