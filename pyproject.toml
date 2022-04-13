@@ -1,8 +1,21 @@
 [tool.poetry]
 name = "streamlit-sortables"
 version = "0.1.0"
-description = ""
+description = "A Streamlit component to provide sortable list."
+license = "MIT"
 authors = ["ohtaman <ohtamans@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/ohtaman/streamlit-sortables"
+keywords = ["streamlit", "sortable", "list"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
