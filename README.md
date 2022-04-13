@@ -3,11 +3,11 @@
 A Streamlit component to provide sortable list.
 You can sort the list of strings on the UI as follows.
 
-![](imgs/single_container.png)
+![](https://raw.githubusercontent.com/ohtaman/streamlit-sortables/main/imgs/single_container.png)
 
 It also supports moving items between multiple containers.
 
-![](imgs/multiple_containers.png)
+![](https://raw.githubusercontent.com/ohtaman/streamlit-sortables/main/imgs/multiple_containers.png)
 
 ## Instllation
 
