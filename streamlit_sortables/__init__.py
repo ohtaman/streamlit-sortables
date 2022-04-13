@@ -27,7 +27,7 @@ if not _RELEASE:
         # We give the component a simple, descriptive name ("my_component"
         # does not fit this bill, so please choose something better for your
         # own component :)
-        "sortable_items",
+        "sort_items",
         # Pass `url` here to tell Streamlit that the component will be served
         # by the local dev server that you run via `npm run start`.
         # (This is useful while your component is in development.)
@@ -80,9 +80,9 @@ def sort_items(items: Union[list[str], list[dict[str, Any]]],  header: str=None,
 if not _RELEASE:
     import streamlit as st
 
-    st.title('Sortable Items')
+    st.title('Sortables')
     
-    st.write('Sort items in single container.')
+    st.write('Sort items in a single container.')
     items = ['item1', 'item2', 'item3']
     sorted_items = sort_items(items)
     st.write(sorted_items)
@@ -98,7 +98,7 @@ if not _RELEASE:
     st.write(sorted_items)
     
     st.write('----')
-    st.write('Lots of items.')
+    st.write('Lots of items in a single container.')
     items = [
         {'header': 'header1', 'items': ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13']},
     ]
