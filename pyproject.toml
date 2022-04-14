@@ -20,7 +20,7 @@ exclude = ["streamlit_sortables/frontend/**/*"]
 include = ["streamlit_sortables/frontend/build/**/*"]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0"
+python = "^3.8"
 streamlit = ">=1.0.0"
 
 [tool.poetry.dev-dependencies]

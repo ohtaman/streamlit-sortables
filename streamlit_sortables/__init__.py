@@ -1,6 +1,5 @@
-import dataclasses
 import os
-from typing import Any, Union, Optional
+from typing import Any, List, Dict, Union, Optional
 
 import streamlit.components.v1 as components
 
@@ -47,7 +46,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def sort_items(items: list[str] | list[dict[str, Any]],  header: str | None=None, multi_containers: bool=False, direction: str="horizontal", key: Any=None) -> list[str] | list[dict[str, Any]]:
+def sort_items(items: Union[List[str], List[Dict[str, Any]]],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", key: Any=None) -> Union[List[str], List[Dict[str, Any]]]:
     """Create a new instance of "sortable_items".
 
     Parameters
@@ -67,7 +66,7 @@ def sort_items(items: list[str] | list[dict[str, Any]],  header: str | None=None
         sorted version of items
     """
     if not multi_containers:
-        if not isinstance(header, str | None):
+        if not isinstance(header, str) and header is not None:
             raise ValueError('header argument must be str or None if multi_containers is False.')
         if not all(map(lambda item: isinstance(item, str), items)):
             raise ValueError('items must be list[str] if multi_containers is False.')
