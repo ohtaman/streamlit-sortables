@@ -70,12 +70,12 @@ def sort_items(items: Union[List[str], List[Dict[str, Any]]],  header: Optional[
             raise ValueError('header argument must be str or None if multi_containers is False.')
         if not all(map(lambda item: isinstance(item, str), items)):
             raise ValueError('items must be list[str] if multi_containers is False.')
-        
+
         items = [{'header': header, 'items': items}]
     else:
         if not all(map(lambda item: isinstance(item, dict), items)):
             raise ValueError('items must be list[dict[str, Any]] if multi_containers is True.')
-    
+
     component_value = _component_func(items=items, direction=direction, key=key, default=items)
 
     # We could modify the value returned from the component if we wanted.
@@ -93,13 +93,13 @@ if not _RELEASE:
     import streamlit as st
 
     st.title('Sortables')
-    
+
     st.write('Sort items in a single container.')
     items = ['item1', 'item2', 'item3']
     sorted_items = sort_items(items)
     st.write(sorted_items)
-    
-    
+
+
     st.write('----')
     st.write('Sort items in multiple containers.')
     items = [
@@ -108,7 +108,7 @@ if not _RELEASE:
     ]
     sorted_items = sort_items(items, multi_containers=True)
     st.write(sorted_items)
-    
+
     st.write('----')
     st.write('Lots of items in a single container.')
     items = [
@@ -116,12 +116,25 @@ if not _RELEASE:
     ]
     sorted_items = sort_items(items, multi_containers=True)
     st.write(sorted_items)
-    
+
     st.write('----')
     st.write('Sort items in multiple containers with vertical direction.')
     items = [
         {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
         {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
+    ]
+    sorted_items = sort_items(items, multi_containers=True, direction="vertical")
+    st.write(sorted_items)
+
+    st.write('----')
+    st.write('Sort items in many containers with vertical direction.')
+    items = [
+        {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
+        {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
+        {'header': 'container3', 'items': ['item7', 'item8', 'item9']},
+        {'header': 'container4', 'items': ['item10', 'item11', 'item12']},
+        {'header': 'container5', 'items': ['item13', 'item14', 'item15']},
+        {'header': 'container6', 'items': ['item16', 'item17', 'item18']},
     ]
     sorted_items = sort_items(items, multi_containers=True, direction="vertical")
     st.write(sorted_items)

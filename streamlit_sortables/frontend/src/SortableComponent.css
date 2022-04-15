@@ -4,11 +4,18 @@
     font: var(--font);
 }
 
+.sortable-component.vertical {
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
 .sortable-component.vertical .sortable-container {
-    float: left;
-    width: fit-content;
-    min-width: 200px;
+    min-width: 175px;
+    margin: 0px;
     padding: 10px;
+    flex-grow: 1;
 }
 
 .container-header {
