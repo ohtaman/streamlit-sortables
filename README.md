@@ -28,7 +28,7 @@ st.write(f'original_items: {original_items}')
 st.write(f'sorted_items: {sorted_items}')
 ```
 
-You can pass list of dicts with `multiple_containers=True`.
+You can pass list of dicts with `multi_containers=True`.
 
 ```python
 
