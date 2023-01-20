@@ -1,8 +1,9 @@
 import os
-from typing import Any, List, Dict, Union, Optional
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
 import streamlit.components.v1 as components
 
+T = TypeVar("T", str, Dict[str,Any])
 # Create a _RELEASE constant. We'll set this to False while we're developing
 # the component, and True when we're ready to package and distribute it.
 # (This is, of course, optional - there are innumerable ways to manage your
@@ -18,7 +19,7 @@ _RELEASE = True
 # It's worth noting that this call to `declare_component` is the
 # *only thing* you need to do to create the binding between Streamlit and
 # your component frontend. Everything else we do in this file is simply a
-# best practice.  
+# best practice.
 
 
 if not _RELEASE:
@@ -46,7 +47,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def sort_items(items: Union[List[str], List[Dict[str, Any]]],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", key: Any=None) -> Union[List[str], List[Dict[str, Any]]]:
+def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", key: Any=None) -> list[T]:
     """Create a new instance of "sortable_items".
 
     Parameters
@@ -62,8 +63,8 @@ def sort_items(items: Union[List[str], List[Dict[str, Any]]],  header: Optional[
 
     Returns
     -------
-    Union[list[str], dict[str, list[str]]]
-        sorted version of items
+    list[T]
+        Sorted version of items. Preserves types of input items.
     """
     if not multi_containers:
         if not isinstance(header, str) and header is not None:
