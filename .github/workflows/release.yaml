@@ -1,0 +1,32 @@
+name: Publish package to PYPI
+
+on:
+  push:
+    tags:
+      - 'v*'
+    
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Install Poetry
+      run: |
+        python -m pip install poetry
+    - name: Publish
+      env:
+        PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        poetry publish --dry-run --build --username $PYPI_USERNAME --password $PYPI_PASSWORD
+    - name: Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "dist/*"
