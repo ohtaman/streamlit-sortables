@@ -6,7 +6,7 @@ You can sort the list of strings on the UI as follows.
 https://user-images.githubusercontent.com/329750/163662202-ce292fc4-2882-46ac-8c2c-ca4b9df675d2.mp4
 
 
-## Instllation
+## Installation
 
 ```python
 $ pip install streamlit-sortables
@@ -40,7 +40,7 @@ original_items = [
     {'header': 'second container', 'items': ['D', 'E', 'F']}
 ]
 
-sorted_items = sort_items(original_items, multiple_contaieners=True)
+sorted_items = sort_items(original_items, multi_containers=True)
 
 st.write(f'original_items: {original_items}')
 st.write(f'sorted_items: {sorted_items}')
