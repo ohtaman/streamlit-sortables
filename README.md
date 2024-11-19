@@ -1,3 +1,5 @@
+There are various typos in your README. Here's the fixed file:
+
 # Streamlit Sortables
 
 A Streamlit component to provide sortable list.
