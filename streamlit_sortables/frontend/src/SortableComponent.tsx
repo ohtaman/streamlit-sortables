@@ -105,7 +105,7 @@ function SortableComponent (props: SortableComponentProps){
               {
                 items.map(item => {
                   return (
-                    <SortableItem key={item} id={item} isActive={item===activeItem}>{item}</SortableItem>
+                    <SortableItem inLineStyles={inLineStyles} key={item} id={item} isActive={item===activeItem}>{item}</SortableItem>
                   )
                 })
               }
