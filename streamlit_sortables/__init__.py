@@ -47,7 +47,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", key: Any=None) -> list[T]:
+def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", inLineStyles=None, key: Any=None) -> list[T]:
     """Create a new instance of "sortable_items".
 
     Parameters
@@ -77,7 +77,7 @@ def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bo
         if not all(map(lambda item: isinstance(item, dict), items)):
             raise ValueError('items must be list[dict[str, Any]] if multi_containers is True.')
 
-    component_value = _component_func(items=items, direction=direction, key=key, default=items)
+    component_value = _component_func(items=items, direction=direction, key=key, inLineStyles=inLineStyles, default=items)
 
     # We could modify the value returned from the component if we wanted.
     # There's no need to do this in our simple example - but it's an option.
