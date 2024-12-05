@@ -19,6 +19,7 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
+import { style } from "glamor";
 
 import {SortableItem} from "./SortableItem"
 import './SortableComponent.css'
@@ -50,12 +51,12 @@ function Container(props: ContainerProps) {
   });
 
   return (
-    <div className="sortable-container" ref={setNodeRef} style={{width: props.width}}>
+    <div className="sortable-container" {...style(inLineStyles["sortable-container"])} ref={setNodeRef} style={{width: props.width}}>
       {
-        props.header? (<div className="container-header">{props.header}</div>): null
+        props.header? (<div className="container-header" {...style(inLineStyles["container-header"])}>{props.header}</div>): null
       }
       <SortableContext id={props.header} items={props.items} strategy={rectSortingStrategy}>
-        <div className="container-body">
+        <div className="container-body" {...style(inLineStyles["container-body"])}>
         {props.children}
         </div>
       </SortableContext>
@@ -69,6 +70,7 @@ interface SortableComponentProps {
 }
 
 function SortableComponent (props: SortableComponentProps){
+  const inLineStyles = props.inLineStyles;
   const [items, setItems] = useState(props.items);
   const [clonedItems, setClonedItems] = useState(props.items);
   const [activeItem, setActiveItem] = useState(null);
@@ -232,12 +234,13 @@ function SortableComponent (props: SortableComponentProps){
 function SortableComponentWrapper(props: any) {
   const args: StreamlitArguments = props.args;
   const items = args.items;
+  const inLineStyles = args.inLineStyles;
   const className = 'sortable-component ' + args.direction;
   useEffect(() => Streamlit.setFrameHeight());
 
   return (
-    <div className={className}>
-      <SortableComponent items={items} direction={args.direction} />
+    <div className={className} {...style(inLineStyles[className])}>
+      <SortableComponent items={items} direction={args.direction} inLineStyles={inLineStyles} />
     </div>
   )
 }
