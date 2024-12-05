@@ -234,7 +234,7 @@ function SortableComponent (props: SortableComponentProps){
 function SortableComponentWrapper(props: any) {
   const args: StreamlitArguments = props.args;
   const items = args.items;
-  const inLineStyles = args.inLineStyles;
+  const inLineStyles = args.inLineStyles || {};
   const className = 'sortable-component ' + args.direction;
   useEffect(() => Streamlit.setFrameHeight());
 
