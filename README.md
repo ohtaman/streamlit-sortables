@@ -45,3 +45,30 @@ sorted_items = sort_items(original_items, multi_containers=True)
 st.write(f'original_items: {original_items}')
 st.write(f'sorted_items: {sorted_items}')
 ```
+
+## Change the style of the component
+
+You can pass css styling for the component. Use `camelCase` instead of `kebab-case`. For example:
+"backgroundColor":"red" <---- use
+"background-color":"red" <--- do not use 
+
+##### Elements you can styles
+'sortable-item',
+'sortable-container',
+'container-header',
+'container-body'
+
+in_line_styles = {
+    'sortable-item':{
+        "backgroundColor":"brown",
+    },
+    'sortable-container':{
+        'backgroundColor':"orange"
+    },
+    'container-header':{
+        'backgroundColor':"orange"
+    },
+    'container-body':{
+        'backgroundColor':"orange"
+    }
+}
