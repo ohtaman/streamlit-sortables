@@ -1,7 +1,7 @@
 import React, {ReactNode, FunctionComponent} from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import { style } from "glamor";
+import { style as StyleGlamor } from "glamor";
 
 import './SortableComponent.css'
 
@@ -29,7 +29,7 @@ export const SortableItem: FunctionComponent<SortableItemProps> = ((props) => {
     const className = "btn shadow-none sortable-item " + (props.isActive ? "active" : "");
 
     return (
-      <li className={className} {...style(props.inLineStyles[className])} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <li className={className} {...StyleGlamor(props.inLineStyles[className])} ref={setNodeRef} style={style} {...attributes} {...listeners}>
         {props.children ? props.children : null}
       </li>
     )
