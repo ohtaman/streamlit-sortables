@@ -249,7 +249,7 @@ function SortableComponentWrapper(props: ComponentProps) {
   useEffect(() => Streamlit.setFrameHeight());
 
   return (
-    <div className={className} style={inLineStyles["sortable-component-parent-container"]}> 
+    <div className={className}> 
       <SortableComponent items={items} direction={args.direction} inLineStyles={inLineStyles} />
     </div>
   )
