@@ -21,15 +21,22 @@ export const SortableItem: FunctionComponent<SortableItemProps> = ((props) => {
       transition,
     } = useSortable({id: props.id});
 
-    const style = {
+    const baseStyle: React.CSSProperties = {
       transform: CSS.Transform.toString(transform),
       transition
     };
+  
+    // Merge baseStyle with inLineStyles["sortable-item"] if it's not empty
+    const style: React.CSSProperties = {
+      ...baseStyle,
+      ...(Object.keys(inLineStyles["sortable-item"] || {}).length > 0 ? inLineStyles["sortable-item"] : {})
+    };
+
 
     const className = "btn shadow-none sortable-item " + (props.isActive ? "active" : "");
 
     return (
-      <li className={className} {...StyleGlamor(props.inLineStyles[className])} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <li className={className} ref={setNodeRef} style={style} {...attributes} {...listeners}>
         {props.children ? props.children : null}
       </li>
     )
