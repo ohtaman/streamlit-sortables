@@ -19,7 +19,6 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
-import { style } from "glamor";
 
 import {SortableItem} from "./SortableItem"
 import './SortableComponent.css'
@@ -43,20 +42,27 @@ interface ContainerProps {
   direction?: Direction,
   width?: number,
   children?: ReactNode,
+  inLineStyles?: {
+    [key: string]: {
+      [key: string]: string | number;
+    }
+  }
 }
 
 function Container(props: ContainerProps) {
+
+  const inLineStyles = props.inLineStyles 
   const {setNodeRef} = useDroppable({
     id: props.header,
   });
 
   return (
-    <div className="sortable-container" {...style(inLineStyles["sortable-container"])} ref={setNodeRef} style={{width: props.width}}>
+    <div className="sortable-container" ref={setNodeRef} style={{width: props.width, ...(Object.keys(inLineStyles["sortable-container"] || {}).length > 0 ? inLineStyles["sortable-container"] : {})}}>
       {
-        props.header? (<div className="container-header" {...style(inLineStyles["container-header"])}>{props.header}</div>): null
+        props.header? (<div className="container-header" style={inLineStyles["container-header"]}>{props.header}</div>): null
       }
       <SortableContext id={props.header} items={props.items} strategy={rectSortingStrategy}>
-        <div className="container-body" {...style(inLineStyles["container-body"])}>
+        <div className="container-body" style={inLineStyles["container-body"]}>
         {props.children}
         </div>
       </SortableContext>
