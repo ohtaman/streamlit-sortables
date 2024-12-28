@@ -56,6 +56,10 @@ def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bo
     header: str or None
     multi_containers: bool
     direction: str
+    in_line_styles: dict[str, dict[str, str]]
+        options to style are:
+        'sortable-component-parent-container',
+        'sortable-item'        
     key: str or None
         An optional key that uniquely identifies this component. If this is
         None, and the component's arguments are changed, the component will
@@ -137,5 +141,12 @@ if not _RELEASE:
         {'header': 'container5', 'items': ['item13', 'item14', 'item15']},
         {'header': 'container6', 'items': ['item16', 'item17', 'item18']},
     ]
-    sorted_items = sort_items(items, multi_containers=True, direction="vertical")
+
+    in_line_styles = {
+        'sortable-component-parent-container':{
+            "background-color":"black"
+        },
+        'sortable-item':{}
+    }
+    sorted_items = sort_items(items, multi_containers=True, direction="vertical", in_line_styles=in_line_styles)
     st.write(sorted_items)
