@@ -47,7 +47,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", in_line_styles=None, key: Any=None) -> list[T]:
+def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", in_line_styles:Optional[Dict]=None, key: Any=None) -> list[T]:
     """Create a new instance of "sortable_items".
 
     Parameters
@@ -100,39 +100,39 @@ def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bo
 if not _RELEASE:
     import streamlit as st
 
-    st.title('Sortables')
+    # st.title('Sortables')
 
-    st.write('Sort items in a single container.')
-    items = ['item1', 'item2', 'item3']
-    sorted_items = sort_items(items)
-    st.write(sorted_items)
+    # st.write('Sort items in a single container.')
+    # items = ['item1', 'item2', 'item3']
+    # sorted_items = sort_items(items)
+    # st.write(sorted_items)
 
 
-    st.write('----')
-    st.write('Sort items in multiple containers.')
-    items = [
-        {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
-        {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
-    ]
-    sorted_items = sort_items(items, multi_containers=True)
-    st.write(sorted_items)
+    # st.write('----')
+    # st.write('Sort items in multiple containers.')
+    # items = [
+    #     {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
+    #     {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
+    # ]
+    # sorted_items = sort_items(items, multi_containers=True)
+    # st.write(sorted_items)
 
-    st.write('----')
-    st.write('Lots of items in a single container.')
-    items = [
-        {'header': 'header1', 'items': ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13']},
-    ]
-    sorted_items = sort_items(items, multi_containers=True)
-    st.write(sorted_items)
+    # st.write('----')
+    # st.write('Lots of items in a single container.')
+    # items = [
+    #     {'header': 'header1', 'items': ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13']},
+    # ]
+    # sorted_items = sort_items(items, multi_containers=True)
+    # st.write(sorted_items)
 
-    st.write('----')
-    st.write('Sort items in multiple containers with vertical direction.')
-    items = [
-        {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
-        {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
-    ]
-    sorted_items = sort_items(items, multi_containers=True, direction="vertical")
-    st.write(sorted_items)
+    # st.write('----')
+    # st.write('Sort items in multiple containers with vertical direction.')
+    # items = [
+    #     {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
+    #     {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
+    # ]
+    # sorted_items = sort_items(items, multi_containers=True, direction="vertical")
+    # st.write(sorted_items)
 
     st.write('----')
     st.write('Sort items in many containers with vertical direction.')
@@ -147,12 +147,14 @@ if not _RELEASE:
 
     in_line_styles = {
         'sortable-component-parent-container':{
-            "background-color":"black"
+            "backgroundColor":"blue",
         },
-        'sortable-item':{},
-        'sortable-container':{},
-        'container-header':{},
-        'container-body':{}
+        'sortable-item':{
+            "backgroundColor":"brown",
+        },
+        'sortable-container':{
+            'backgroundColor':"orange"
+        }
     }
     sorted_items = sort_items(items, multi_containers=True, direction="vertical", in_line_styles=in_line_styles)
     st.write(sorted_items)
