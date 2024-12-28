@@ -1,10 +1,11 @@
 import {
   Streamlit,
   withStreamlitConnection,
+  ComponentProps
 } from "streamlit-component-lib"
 import React, { ReactNode, useState, useEffect } from "react"
 import {
-  DndContext, 
+  DndContext,
   useDroppable,
   DragOverlay,
   KeyboardSensor,
@@ -20,7 +21,7 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 
-import {SortableItem} from "./SortableItem"
+import { SortableItem } from "./SortableItem"
 import './SortableComponent.css'
 
 
@@ -29,11 +30,16 @@ type Direction = 'horizontal' | 'vertical';
 interface StreamlitArguments {
   direction?: Direction,
   items: ContainerDescription[],
+  inLineStyles?: InLineStyles 
 }
 
 interface ContainerDescription {
   header: string,
   items: string[]
+}
+
+interface InLineStyles {
+  [key: string]: React.CSSProperties
 }
 
 interface ContainerProps {
@@ -42,21 +48,24 @@ interface ContainerProps {
   direction?: Direction,
   width?: number,
   children?: ReactNode,
+  inLineStyles?: InLineStyles
 }
 
 function Container(props: ContainerProps) {
-  const {setNodeRef} = useDroppable({
+
+  const inLineStyles = props.inLineStyles
+  const { setNodeRef } = useDroppable({
     id: props.header,
   });
 
   return (
-    <div className="sortable-container" ref={setNodeRef} style={{width: props.width}}>
+    <div className="sortable-container" ref={setNodeRef} style={{ width: props.width, ...(Object.keys(inLineStyles?.["sortable-container"] || {}).length > 0 ? inLineStyles?.["sortable-container"] : {}) }}>
       {
-        props.header? (<div className="container-header">{props.header}</div>): null
+        props.header ? (<div className="container-header" style={inLineStyles?.["container-header"]}>{props.header}</div>) : null
       }
       <SortableContext id={props.header} items={props.items} strategy={rectSortingStrategy}>
-        <div className="container-body">
-        {props.children}
+        <div className="container-body" style={inLineStyles?.["container-body"]}>
+          {props.children}
         </div>
       </SortableContext>
     </div>
@@ -65,10 +74,12 @@ function Container(props: ContainerProps) {
 
 interface SortableComponentProps {
   direction?: Direction,
-  items: ContainerDescription[]
+  items: ContainerDescription[],
+  inLineStyles?: InLineStyles
 }
 
-function SortableComponent (props: SortableComponentProps){
+function SortableComponent(props: SortableComponentProps) {
+  const inLineStyles = props.inLineStyles;
   const [items, setItems] = useState(props.items);
   const [clonedItems, setClonedItems] = useState(props.items);
   const [activeItem, setActiveItem] = useState(null);
@@ -97,13 +108,13 @@ function SortableComponent (props: SortableComponentProps){
       onDragCancel={handleDragCancel}
     >
       {
-        items.map(({header, items}) => {
+        items.map(({ header, items }) => {
           return (
-            <Container key={header} header={header} items={items} direction={props.direction}>
+            <Container key={header} header={header} items={items} direction={props.direction} inLineStyles={inLineStyles}>
               {
                 items.map(item => {
                   return (
-                    <SortableItem key={item} id={item} isActive={item===activeItem}>{item}</SortableItem>
+                    <SortableItem inLineStyles={inLineStyles} key={item} id={item} isActive={item === activeItem}>{item}</SortableItem>
                   )
                 })
               }
@@ -130,7 +141,7 @@ function SortableComponent (props: SortableComponentProps){
 
   function handleDragEnd(event: any) {
     setActiveItem(null);
-    const {active, over} = event;
+    const { active, over } = event;
     if (!over) {
       return
     }
@@ -143,7 +154,7 @@ function SortableComponent (props: SortableComponentProps){
       const activeItemIndex = container.items.indexOf(active.id);
       const overItemIndex = container.items.indexOf(over.id);
 
-      const newItems = items.map(({header, items}, index) => {
+      const newItems = items.map(({ header, items }, index) => {
         if (index === activeContainerIndex) {
           return {
             header: header,
@@ -165,7 +176,7 @@ function SortableComponent (props: SortableComponentProps){
   }
 
   function handleDragOver(event: any) {
-    const {active, over} = event;
+    const { active, over } = event;
 
     if (!over) {
       return
@@ -183,16 +194,16 @@ function SortableComponent (props: SortableComponentProps){
 
     const activeItemIndex = items[activeContainerIndex].items.indexOf(active.id);
     const activeItem = items[activeContainerIndex].items[activeItemIndex];
-    const newItems = items.map(({header, items}, index) => {
+    const newItems = items.map(({ header, items }, index) => {
       if (index === activeContainerIndex) {
         return {
           header: header,
-          items: [...items.slice(0, activeItemIndex),  ...items.slice(activeItemIndex + 1)]
+          items: [...items.slice(0, activeItemIndex), ...items.slice(activeItemIndex + 1)]
         }
       } else if (index === overContainerIndex) {
         return {
           header: header,
-          items: [...items.slice(0, activeItemIndex),  activeItem, ...items.slice(activeItemIndex)]
+          items: [...items.slice(0, activeItemIndex), activeItem, ...items.slice(activeItemIndex)]
         }
       } else {
         return {
@@ -205,11 +216,11 @@ function SortableComponent (props: SortableComponentProps){
   }
 
   function findContainer(item: string) {
-    const containerIndex = items.findIndex(({header}) => header === item);
+    const containerIndex = items.findIndex(({ header }) => header === item);
     if (containerIndex >= 0) {
       return containerIndex;
     }
-    return items.findIndex(({items}) => items.includes(item));
+    return items.findIndex(({ items }) => items.includes(item));
   }
 
   function isSameOrder(items1: ContainerDescription[], items2: ContainerDescription[]) {
@@ -217,7 +228,7 @@ function SortableComponent (props: SortableComponentProps){
       return false;
     }
 
-    return items1.every(({header, items}, index) => {
+    return items1.every(({ header, items }, index) => {
       const container2 = items2[index];
       if (header !== container2.header) {
         return false;
@@ -229,15 +240,17 @@ function SortableComponent (props: SortableComponentProps){
   }
 }
 
-function SortableComponentWrapper(props: any) {
+function SortableComponentWrapper(props: ComponentProps) {
+  
   const args: StreamlitArguments = props.args;
   const items = args.items;
+  const inLineStyles = args.inLineStyles || {};
   const className = 'sortable-component ' + args.direction;
   useEffect(() => Streamlit.setFrameHeight());
 
   return (
-    <div className={className}>
-      <SortableComponent items={items} direction={args.direction} />
+    <div className={className}> 
+      <SortableComponent items={items} direction={args.direction} inLineStyles={inLineStyles} />
     </div>
   )
 }
