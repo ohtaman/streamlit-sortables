@@ -4,23 +4,46 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.x'
-    - name: Install Poetry
-      run: |
-        python -m pip install poetry
-    - name: Publish
-      run: |
-        poetry publish --build --username __token__ --password ${ secrets.PYPI_API_TOKEN }
-    - name: Release
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "dist/*"
+      # ソースコードをチェックアウト
+      - uses: actions/checkout@v2
+
+      # Pythonをセットアップ
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+
+      # Poetryをインストール
+      - name: Install Poetry
+        run: |
+          python -m pip install poetry
+
+      # Node.jsをセットアップ（npmを使うため）
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # 必要なバージョンに合わせて変更
+
+      # npmパッケージをインストールしてビルド
+      - name: Build frontend
+        working-directory: ./streamlit_sortables/frontend
+        run: |
+          npm install
+          npm run build
+
+      # パッケージを公開（コメントアウトを外してください）
+      # - name: Publish
+      #   run: |
+      #     poetry publish --build --username __token__ --password ${ secrets.PYPI_API_TOKEN }
+
+      # GitHubリリースを作成
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
