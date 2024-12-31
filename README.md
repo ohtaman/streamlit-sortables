@@ -48,6 +48,8 @@ st.write(f'sorted_items: {sorted_items}')
 You can apply custom CSS styles using the `custom_style` option.  
 By default, the styles are defined in [SortableComponent.css](streamlit_sortables/frontend/src/SortableComponent.css).
 
+Below is an example of how to define and use custom styles:
+
 ```python
 import streamlit as st
 from streamlit_sortables import sort_items
@@ -66,6 +68,7 @@ custom_style = """
 }
 .sortable-container {
     background-color: #F0F0F0;
+    counter-reset: item;
 }
 .sortable-container-header {
     background-color: #FFBFDF;
@@ -79,9 +82,17 @@ custom_style = """
     font-color: #FFFFFF;
     font-weight: bold;
 }
+.sortable-item::before {
+    content: counter(item) ". ";
+    counter-increment: item;
+}
 """
 sorted_items = sort_items(original_items, multi_containers=True, custom_style=custom_style)
 
 st.write(f'original_items: {original_items}')
 st.write(f'sorted_items: {sorted_items}')
 ```
+
+The above code applies the custom styles as defined.
+
+![styling](imgs/styling.png)
