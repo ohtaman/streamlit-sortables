@@ -29,10 +29,34 @@ sorted_items = sort_items(items, multi_containers=True)
 st.write(sorted_items)
 
 st.write('----')
-st.write('Sort items in multiple containers with vertical direction.')
+st.write('Sort items with custom style.')
 items = [
     {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
     {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
+    {'header': 'container3', 'items': ['item7', 'item8', 'item9']},
 ]
-sorted_items = sort_items(items, multi_containers=True, direction="vertical")
+custom_style = """
+.sortable-component {
+    border: 3px solid #6495ED;
+    border-radius: 10px;
+    padding: 5px;
+}
+.sortable-container {
+    background-color: #F0F0F0;
+}
+.sortable-container-header {
+    background-color: #FFBFDF;
+    padding-left: 1rem;
+}
+.sortable-container-body {
+    background-color: #F0F0F0;
+}
+.sortable-item, .sortable-item:hover {
+    background-color: #6495ED;
+    font-color: #FFFFFF;
+    font-weight: bold;
+}
+"""
+sorted_items = sort_items(items, multi_containers=True, custom_style=custom_style)
+
 st.write(sorted_items)
