@@ -18,12 +18,12 @@
     flex-grow: 1;
 }
 
-.container-header {
+.sortable-container-header {
     margin: 0px;
     background-color: var(--background-color);
 }
 
-.container-body {
+.sortable-container-body {
     margin: 0px;
     padding: 3px;
     width: 100%;

@@ -31,7 +31,6 @@ st.write(f'sorted_items: {sorted_items}')
 You can pass list of dicts with `multi_containers=True`.
 
 ```python
-
 import streamlit as st
 from streamlit_sortables import sort_items
 
@@ -46,29 +45,54 @@ st.write(f'original_items: {original_items}')
 st.write(f'sorted_items: {sorted_items}')
 ```
 
-## Change the style of the component
+You can apply custom CSS styles using the `custom_style` option.  
+By default, the styles are defined in [SortableComponent.css](streamlit_sortables/frontend/src/SortableComponent.css).
 
-You can pass css styling for the component. Use `camelCase` instead of `kebab-case`. For example:
-"backgroundColor":"red" <---- use
-"background-color":"red" <--- do not use 
+Below is an example of how to define and use custom styles:
 
-##### Elements you can styles
-'sortable-item',
-'sortable-container',
-'container-header',
-'container-body'
+```python
+import streamlit as st
+from streamlit_sortables import sort_items
 
-in_line_styles = {
-    'sortable-item':{
-        "backgroundColor":"brown",
-    },
-    'sortable-container':{
-        'backgroundColor':"orange"
-    },
-    'container-header':{
-        'backgroundColor':"orange"
-    },
-    'container-body':{
-        'backgroundColor':"orange"
-    }
+
+original_items = [
+    {'header': 'first container',  'items': ['A', 'B', 'C']},
+    {'header': 'second container', 'items': ['D', 'E', 'F']}
+]
+
+custom_style = """
+.sortable-component {
+    border: 3px solid #6495ED;
+    border-radius: 10px;
+    padding: 5px;
 }
+.sortable-container {
+    background-color: #F0F0F0;
+    counter-reset: item;
+}
+.sortable-container-header {
+    background-color: #FFBFDF;
+    padding-left: 1rem;
+}
+.sortable-container-body {
+    background-color: #F0F0F0;
+}
+.sortable-item, .sortable-item:hover {
+    background-color: #6495ED;
+    font-color: #FFFFFF;
+    font-weight: bold;
+}
+.sortable-item::before {
+    content: counter(item) ". ";
+    counter-increment: item;
+}
+"""
+sorted_items = sort_items(original_items, multi_containers=True, custom_style=custom_style)
+
+st.write(f'original_items: {original_items}')
+st.write(f'sorted_items: {sorted_items}')
+```
+
+The above code applies the custom styles as defined.
+
+![styling](imgs/styling.png)

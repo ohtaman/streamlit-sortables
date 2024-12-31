@@ -30,7 +30,7 @@ type Direction = 'horizontal' | 'vertical';
 interface StreamlitArguments {
   direction?: Direction,
   items: ContainerDescription[],
-  inLineStyles?: InLineStyles 
+  customStyle?: string
 }
 
 interface ContainerDescription {
@@ -38,33 +38,26 @@ interface ContainerDescription {
   items: string[]
 }
 
-interface InLineStyles {
-  [key: string]: React.CSSProperties
-}
-
 interface ContainerProps {
   header: string,
   items: string[],
   direction?: Direction,
   width?: number,
-  children?: ReactNode,
-  inLineStyles?: InLineStyles
+  children?: ReactNode
 }
 
 function Container(props: ContainerProps) {
-
-  const inLineStyles = props.inLineStyles
   const { setNodeRef } = useDroppable({
     id: props.header,
   });
 
   return (
-    <div className="sortable-container" ref={setNodeRef} style={{ width: props.width, ...(Object.keys(inLineStyles?.["sortable-container"] || {}).length > 0 ? inLineStyles?.["sortable-container"] : {}) }}>
+    <div className="sortable-container" ref={setNodeRef} style={{ width: props.width }}>
       {
-        props.header ? (<div className="container-header" style={inLineStyles?.["container-header"]}>{props.header}</div>) : null
+        props.header ? (<div className="sortable-container-header">{props.header}</div>) : null
       }
       <SortableContext id={props.header} items={props.items} strategy={rectSortingStrategy}>
-        <div className="container-body" style={inLineStyles?.["container-body"]}>
+        <div className="sortable-container-body">
           {props.children}
         </div>
       </SortableContext>
@@ -74,12 +67,10 @@ function Container(props: ContainerProps) {
 
 interface SortableComponentProps {
   direction?: Direction,
-  items: ContainerDescription[],
-  inLineStyles?: InLineStyles
+  items: ContainerDescription[]
 }
 
 function SortableComponent(props: SortableComponentProps) {
-  const inLineStyles = props.inLineStyles;
   const [items, setItems] = useState(props.items);
   const [clonedItems, setClonedItems] = useState(props.items);
   const [activeItem, setActiveItem] = useState(null);
@@ -110,11 +101,11 @@ function SortableComponent(props: SortableComponentProps) {
       {
         items.map(({ header, items }) => {
           return (
-            <Container key={header} header={header} items={items} direction={props.direction} inLineStyles={inLineStyles}>
+            <Container key={header} header={header} items={items} direction={props.direction}>
               {
                 items.map(item => {
                   return (
-                    <SortableItem inLineStyles={inLineStyles} key={item} id={item} isActive={item === activeItem}>{item}</SortableItem>
+                    <SortableItem key={item} id={item} isActive={item === activeItem}>{item}</SortableItem>
                   )
                 })
               }
@@ -244,17 +235,15 @@ function SortableComponentWrapper(props: ComponentProps) {
   
   const args: StreamlitArguments = props.args;
   const items = args.items;
-  const inLineStyles = args.inLineStyles || {};
   const className = 'sortable-component ' + args.direction;
   useEffect(() => Streamlit.setFrameHeight());
 
   return (
     <div className={className}> 
-      <SortableComponent items={items} direction={args.direction} inLineStyles={inLineStyles} />
+      <style>{args.customStyle}</style>
+      <SortableComponent items={items} direction={args.direction} />
     </div>
   )
 }
-
-
 
 export default withStreamlitConnection(SortableComponentWrapper)

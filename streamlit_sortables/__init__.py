@@ -47,7 +47,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", in_line_styles:Optional[Dict]=None, key: Any=None) -> list[T]:
+def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bool=False, direction: str="horizontal", custom_style: Optional[str]=None, key: Any=None) -> list[T]:
     """Create a new instance of "sortable_items".
 
     Parameters
@@ -56,13 +56,15 @@ def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bo
     header: str or None
     multi_containers: bool
     direction: str
-    in_line_styles: dict[str, dict[str, str]]
-        options to style are:
-        'sortable-component-parent-container',
-        'sortable-item',
-        'sortable-container',
-        'container-header',
-        'container-body'
+    custom_style: str or None
+        Custom CSS styles to apply to the component. Defaults to None.
+        The following selectors can be used:
+        - '.sortable-component' for the main container
+        - '.sortable-component.vertical' if direction is 'vertical'
+        - '.sortable-container' for each container if multi_containers is True
+        - '.sortable-container-header' for the header
+        - '.sortable-container-boy' for the body
+        - '.sortable-item' for each item
     key: str or None
         An optional key that uniquely identifies this component. If this is
         None, and the component's arguments are changed, the component will
@@ -84,7 +86,7 @@ def sort_items(items: list[T],  header: Optional[str]=None, multi_containers: bo
         if not all(map(lambda item: isinstance(item, dict), items)):
             raise ValueError('items must be list[dict[str, Any]] if multi_containers is True.')
 
-    component_value = _component_func(items=items, direction=direction, key=key, inLineStyles=in_line_styles, default=items)
+    component_value = _component_func(items=items, direction=direction, customStyle=custom_style, default=items, key=key)
 
     # We could modify the value returned from the component if we wanted.
     # There's no need to do this in our simple example - but it's an option.
@@ -102,16 +104,10 @@ if not _RELEASE:
 
     st.title('Sortables')
 
-    in_line_styles = {
-        'sortable-component-parent-container':{},
-        'sortable-item':{},
-        'sortable-container':{}
-    }
-
     st.write('Sort items in a single container.')
     items = ['item1', 'item2', 'item3']
     
-    sorted_items = sort_items(items, in_line_styles=in_line_styles)
+    sorted_items = sort_items(items)
     st.write(sorted_items)
 
 
@@ -121,7 +117,7 @@ if not _RELEASE:
         {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
         {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
     ]
-    sorted_items = sort_items(items, multi_containers=True, in_line_styles=in_line_styles)
+    sorted_items = sort_items(items, multi_containers=True)
     st.write(sorted_items)
 
     st.write('----')
@@ -129,7 +125,7 @@ if not _RELEASE:
     items = [
         {'header': 'header1', 'items': ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13']},
     ]
-    sorted_items = sort_items(items, multi_containers=True, in_line_styles=in_line_styles)
+    sorted_items = sort_items(items, multi_containers=True)
     st.write(sorted_items)
 
     st.write('----')
@@ -138,7 +134,7 @@ if not _RELEASE:
         {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
         {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
     ]
-    sorted_items = sort_items(items, multi_containers=True, direction="vertical", in_line_styles=in_line_styles)
+    sorted_items = sort_items(items, multi_containers=True, direction="vertical")
     st.write(sorted_items)
 
     st.write('----')
@@ -152,5 +148,38 @@ if not _RELEASE:
         {'header': 'container6', 'items': ['item16', 'item17', 'item18']},
     ]
     
-    sorted_items = sort_items(items, multi_containers=True, direction="vertical", in_line_styles=in_line_styles)
+    sorted_items = sort_items(items, multi_containers=True, direction="vertical")
+    st.write(sorted_items)
+
+    st.write('----')
+    st.write('Sort items with custom style.')
+    items = [
+        {'header': 'container1', 'items': ['item1', 'item2', 'item3']},
+        {'header': 'container2', 'items': ['item4', 'item5', 'item6']},
+        {'header': 'container3', 'items': ['item7', 'item8', 'item9']},
+    ]
+    custom_style = """
+    .sortable-component {
+        border: 3px solid #6495ED;
+        border-radius: 10px;
+        padding: 5px;
+    }
+    .sortable-container {
+        background-color: #F0F0F0;
+    }
+    .sortable-container-header {
+        background-color: #FFBFDF;
+        padding-left: 1rem;
+    }
+    .sortable-container-body {
+        background-color: #F0F0F0;
+    }
+    .sortable-item, .sortable-item:hover {
+        background-color: #6495ED;
+        font-color: #FFFFFF;
+        font-weight: bold;
+    }
+    """
+    sorted_items = sort_items(items, multi_containers=True, custom_style=custom_style)
+    
     st.write(sorted_items)
