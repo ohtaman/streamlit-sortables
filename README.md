@@ -1,63 +1,102 @@
 # Streamlit Sortables
 
-A Streamlit component to provide sortable list.
-You can sort the list of strings on the UI as follows.
+Streamlit Sortables is a component for Streamlit applications that allows users to create sortable lists. This component enhances the interactivity of your Streamlit apps by enabling users to sort lists of strings in the UI.
 
-https://user-images.githubusercontent.com/329750/163662202-ce292fc4-2882-46ac-8c2c-ca4b9df675d2.mp4
+![Demo](https://user-images.githubusercontent.com/329750/163662202-ce292fc4-2882-46ac-8c2c-ca4b9df675d2.mp4)
 
+## Features
+
+- **Sortable Lists**: Easily sort lists of strings or dictionaries.
+- **Multiple Containers**: Support for sorting items across multiple containers.
+- **Custom Styling**: Apply custom CSS styles to match your application's theme.
 
 ## Installation
 
-```python
-$ pip install streamlit-sortables
+Install the package via pip:
+
+```bash
+pip install streamlit-sortables
 ```
 
 ## Usage
 
-Call `sorted_items` method with a list of string. Return value is the sorted items.
+### Sorting a List of Strings
+
+Use the `sort_items` method to sort a list of strings. The return value is the sorted list.
 
 ```python
 import streamlit as st
 from streamlit_sortables import sort_items
-
 
 original_items = ['A', 'B', 'C']
 sorted_items = sort_items(original_items)
 
-st.write(f'original_items: {original_items}')
-st.write(f'sorted_items: {sorted_items}')
+st.write(f'Original items: {original_items}')
+st.write(f'Sorted items: {sorted_items}')
 ```
 
-You can pass list of dicts with `multi_containers=True`.
+### Sorting with Multiple Containers
+
+You can pass a list of dictionaries with `multi_containers=True` to sort items across multiple containers.
 
 ```python
 import streamlit as st
 from streamlit_sortables import sort_items
 
 original_items = [
-    {'header': 'first container',  'items': ['A', 'B', 'C']},
-    {'header': 'second container', 'items': ['D', 'E', 'F']}
+    {'header': 'First Container',  'items': ['A', 'B', 'C']},
+    {'header': 'Second Container', 'items': ['D', 'E', 'F']}
 ]
 
 sorted_items = sort_items(original_items, multi_containers=True)
 
-st.write(f'original_items: {original_items}')
-st.write(f'sorted_items: {sorted_items}')
+st.write(f'Original items: {original_items}')
+st.write(f'Sorted items: {sorted_items}')
 ```
 
-You can apply custom CSS styles using the `custom_style` option.  
-By default, the styles are defined in [SortableComponent.css](streamlit_sortables/frontend/src/SortableComponent.css).
+### Theme Customization
 
-Below is an example of how to define and use custom styles:
+Here's a simple example of how to customize the theme by changing the background color and font size, and numbering the items. By default, styles are defined in [SortableComponent.css](streamlit_sortables/frontend/src/SortableComponent.css):
 
 ```python
 import streamlit as st
 from streamlit_sortables import sort_items
 
+original_items = [
+    {'header': 'Container', 'items': ['Item 1', 'Item 2', 'Item 3']}
+]
+
+simple_style = """
+.sortable-component {
+    background-color:rgb(0, 225, 255);
+    font-size: 16px;
+    counter-reset: item;
+}
+.sortable-item {
+    background-color: black;
+    color: white;
+}
+"""
+
+sorted_items = sort_items(original_items, multi_containers=True, custom_style=simple_style)
+
+st.write(f'Original items: {original_items}')
+st.write(f'Sorted items: {sorted_items}')
+```
+
+This example changes the background color to a light blue, sets the font size to 16px, and numbers the items.
+
+### Advanced CSS Customization
+
+This example demonstrates advanced CSS customization, including theme customization and item numbering. Apply custom CSS styles using the `custom_style` option.
+
+```python
+import streamlit as st
+from streamlit_sortables import sort_items
 
 original_items = [
-    {'header': 'first container',  'items': ['A', 'B', 'C']},
-    {'header': 'second container', 'items': ['D', 'E', 'F']}
+    {'header': 'First Container',  'items': ['A', 'B', 'C']},
+    {'header': 'Second Container', 'items': ['D', 'E', 'F']}
 ]
 
 custom_style = """
@@ -89,10 +128,16 @@ custom_style = """
 """
 sorted_items = sort_items(original_items, multi_containers=True, custom_style=custom_style)
 
-st.write(f'original_items: {original_items}')
-st.write(f'sorted_items: {sorted_items}')
+st.write(f'Original items: {original_items}')
+st.write(f'Sorted items: {sorted_items}')
 ```
 
-The above code applies the custom styles as defined.
+![Styling Example](imgs/styling.png)
 
-![styling](imgs/styling.png)
+## Contributing
+
+Contributions are welcome! Please submit issues or pull requests for any bugs or feature requests.
+
+## License
+
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
