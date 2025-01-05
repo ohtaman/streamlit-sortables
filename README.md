@@ -2,7 +2,7 @@
 
 Streamlit Sortables is a component for Streamlit applications that allows users to create sortable lists. This component enhances the interactivity of your Streamlit apps by enabling users to sort lists of strings in the UI.
 
-![Demo](https://user-images.githubusercontent.com/329750/163662202-ce292fc4-2882-46ac-8c2c-ca4b9df675d2.mp4)
+https://user-images.githubusercontent.com/329750/163662202-ce292fc4-2882-46ac-8c2c-ca4b9df675d2.mp4
 
 ## Features
 
