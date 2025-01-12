@@ -7,7 +7,8 @@ import './SortableComponent.css'
 export interface SortableItemProps {
   id: string,
   isActive?: boolean,
-  children?: ReactNode
+  children?: ReactNode,
+  isOverlay?: boolean
 }
 
 export const SortableItem: FunctionComponent<SortableItemProps> = ((props) => {
@@ -18,16 +19,22 @@ export const SortableItem: FunctionComponent<SortableItemProps> = ((props) => {
       transform,
       transition,
       isDragging
-    } = useSortable({id: props.id});
+    } = props.isOverlay ? { 
+      attributes: {}, 
+      listeners: {}, 
+      setNodeRef: null, 
+      transform: null, 
+      transition: undefined, 
+      isDragging: false 
+    } : useSortable({id: props.id});
 
     const style: React.CSSProperties = {
-      transform: CSS.Transform.toString(transform),
+      transform: transform ? CSS.Transform.toString(transform) : undefined,
       transition,
-      opacity: isDragging ? 0.5 : undefined,
       cursor: isDragging ? 'grabbing' : 'grab'
     };
 
-    const className = `btn shadow-none sortable-item ${props.isActive ? "active" : ""} ${isDragging ? "dragging" : ""}`;
+    const className = `btn shadow-none sortable-item ${props.isActive ? "active" : ""} ${isDragging ? "dragging" : ""} ${props.isOverlay ? "sortable-item-overlay" : ""}`;
 
     return (
       <li className={className} ref={setNodeRef} style={style} {...attributes} {...listeners}>

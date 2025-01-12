@@ -32,14 +32,13 @@
     background-color: var(--secondary-background-color);
 }
 
-.sortable-item, .sortable-item:hover {
+.sortable-item {
     margin: 5px;
     background-color: var(--primary-color);
     color: white;
     padding-top: 3px;
     padding-bottom: 3px;
     height: 100%;
-    transition: transform 200ms ease, box-shadow 200ms ease;
     cursor: grab;
     user-select: none;
 }
@@ -52,28 +51,14 @@
     opacity: 0.5;
 }
 
-/* Styles for the item being dragged */
-[data-dnd-kit-dragging] {
-    transform: scale(1.05) !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+.dragging {
+    opacity: 0.5;
 }
 
-/* Styles for the drag overlay */
-.sortable-item[role="button"] {
+.sortable-item-overlay {
     transform-origin: 0 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .sortable-component.vertical .sortable-item {
     display: block;
-}
-
-/* Container highlight when item is being dragged over */
-.sortable-container-body[data-dnd-kit-droppable-container] {
-    transition: background-color 200ms ease;
-}
-
-.sortable-container-body[data-dnd-kit-droppable-container][aria-selected="true"] {
-    background-color: var(--primary-color-light, rgba(var(--primary-color), 0.1));
 }
