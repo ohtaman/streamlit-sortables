@@ -183,3 +183,46 @@ if not _RELEASE:
     sorted_items = sort_items(items, multi_containers=True, custom_style=custom_style)
     
     st.write(sorted_items)
+
+    st.write('----')
+    st.write('Advanced custom style.')
+    original_items = [
+        {'header': 'first container',  'items': ['A', 'B', 'C']},
+        {'header': 'second container', 'items': ['D', 'E', 'F']}
+    ]
+
+    custom_style = """
+    .sortable-component {
+        border: 3px solid #6495ED;
+        border-radius: 10px;
+        padding: 5px;
+    }
+    .sortable-container {
+        background-color: #F0F0F0;
+        counter-reset: item;
+    }
+    .sortable-container-header {
+        background-color: #FFBFDF;
+        padding-left: 1rem;
+    }
+    .sortable-container-body {
+        background-color: #F0F0F0;
+    }
+    .sortable-item, .sortable-item:hover {
+        background-color: #6495ED;
+        font-color: #FFFFFF;
+        font-weight: bold;
+    }
+    .sortable-item::before {
+        content: counter(item) ". ";
+        counter-increment: item;
+    }
+    .sortable-item.dragging::before {
+        content: none;
+        counter-increment: none;
+    }
+    """
+    sorted_items = sort_items(original_items, multi_containers=True, custom_style=custom_style)
+
+    st.write(f'original_items: {original_items}')
+    st.write(f'sorted_items: {sorted_items}')

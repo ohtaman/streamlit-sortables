@@ -17,27 +17,36 @@ export const SortableItem: FunctionComponent<SortableItemProps> = ((props) => {
       listeners,
       setNodeRef,
       transform,
-      transition,
-      isDragging
-    } = props.isOverlay ? { 
-      attributes: {}, 
-      listeners: {}, 
-      setNodeRef: null, 
-      transform: null, 
-      transition: undefined, 
-      isDragging: false 
-    } : useSortable({id: props.id});
+      transition
+    } = useSortable({id: props.id});
 
-    const style: React.CSSProperties = {
-      transform: transform ? CSS.Transform.toString(transform) : undefined,
+    // If overlay, override the sortable properties
+    const sortableProps = props.isOverlay ? {
+      attributes: {},
+      listeners: {},
+      setNodeRef: null,
+      transform: null,
+      transition: undefined,
+      isDragging: true
+    } : {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
       transition,
-      cursor: isDragging ? 'grabbing' : 'grab'
+      isDragging: false
     };
 
-    const className = `btn shadow-none sortable-item ${props.isActive ? "active" : ""} ${isDragging ? "dragging" : ""} ${props.isOverlay ? "sortable-item-overlay" : ""}`;
+    const style: React.CSSProperties = {
+      transform: sortableProps.transform ? CSS.Transform.toString(sortableProps.transform) : undefined,
+      transition: sortableProps.transition,
+      cursor: sortableProps.isDragging ? 'grabbing' : 'grab'
+    };
+
+    const className = `btn shadow-none sortable-item ${props.isActive ? "active" : ""} ${sortableProps.isDragging ? "dragging" : ""}`;
 
     return (
-      <li className={className} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <li className={className} ref={sortableProps.setNodeRef} style={style} {...sortableProps.attributes} {...sortableProps.listeners}>
         {props.children ? props.children : null}
       </li>
     )
