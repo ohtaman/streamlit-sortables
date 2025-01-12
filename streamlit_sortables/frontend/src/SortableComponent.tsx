@@ -114,7 +114,7 @@ function SortableComponent(props: SortableComponentProps) {
         })
       }
       <DragOverlay>
-        <SortableItem id="">{activeItem}</SortableItem>
+        <SortableItem id="" isOverlay={true}>{activeItem}</SortableItem>
       </DragOverlay>
     </DndContext>
   );

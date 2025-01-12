@@ -32,17 +32,27 @@
     background-color: var(--secondary-background-color);
 }
 
-.sortable-item, .sortable-item:hover{
+.sortable-item, .sortable-item:hover {
     margin: 5px;
     background-color: var(--primary-color);
     color: white;
     padding-top: 3px;
     padding-bottom: 3px;
     height: 100%;
+    cursor: grab;
+    user-select: none;
+}
+
+.sortable-item:active {
+    cursor: grabbing;
 }
 
 .active {
     opacity: 0.5;
+}
+
+.sortable-item.dragging {
+    transform-origin: 0 0;
 }
 
 .sortable-component.vertical .sortable-item {
