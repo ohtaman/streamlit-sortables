@@ -74,6 +74,7 @@ function SortableComponent(props: SortableComponentProps) {
   const [items, setItems] = useState(props.items);
   const [clonedItems, setClonedItems] = useState(props.items);
   const [activeItem, setActiveItem] = useState(null);
+
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -162,6 +163,7 @@ function SortableComponent(props: SortableComponentProps) {
       setItems(newItems);
       if (!isSameOrder(clonedItems, newItems)) {
         Streamlit.setComponentValue(newItems);
+        Streamlit.setFrameHeight();
       }
     }
   }
