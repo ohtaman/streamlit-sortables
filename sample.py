@@ -1,8 +1,6 @@
 import streamlit as st
 from streamlit_sortables import sort_items
 
-import streamlit as st
-
 st.title('Sortables')
 
 st.write('Sort items in a single container.')
